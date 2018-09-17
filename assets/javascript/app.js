@@ -16,11 +16,14 @@ var questions = [{
 
 var answers = {
     array: [{
-        answers: ["1", "2", "3", "4"]
+        answers: ["1", "2", "3", "4"],
+        correctAns: 1
     }, {
-        answers: ["waw", "cod 4", "mw2", "mw3"]
+        answers: ["waw", "cod 4", "mw2", "mw3"],
+        correctAns: 2
     }, {
-        answers: ["yellow", "sapphire", "ruby", "blue"]
+        answers: ["yellow", "sapphire", "ruby", "blue"],
+        correctAns: 1
     }
     ]
 };
@@ -55,12 +58,28 @@ jQuery(function ($) {
 //updates the html with the first question, and answer. every 60 seconds, the counter goes up by 1 and moves 
 //along the array's index
 function askQuestion() {
+    // debugger;
     questionHolder.html(questions[currentQ].question);
+    answerHolder.empty();
     //this for loop is to output every value inside the array, need to figure out how to push to separate lines though
     for (i = 0; i < 4; i++) {
-        var answersHtml = $("<button>");
-        answersHtml.text(answers.array[currentA].answers[i]);
-        answerHolder.append(answersHtml);
+        var button = $("<button>");
+        button.text(answers.array[currentA].answers[i]);
+        button.attr('data-id', i);
+        answerHolder.append(button);
     }
 }
-
+//work on getting the choice to correspond to the actual click
+$(document).on("click", "button", function (){
+    var choice = $(answers).data("id");
+    //how to pass in the correctAns value as the index for the answers index?
+    var index = answers.array[currentA].correctAns;
+    var correct = answers.array[currentA].answers[index];
+    if(choice === correct) {
+        console.log("correct");
+    }
+    else{
+        console.log("incorrect");
+    }
+    //if the chosen click is equal to the correct 
+})
