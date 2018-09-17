@@ -78,6 +78,7 @@ $(document).on("click", "button", function (){
     if(choice === correct) {
         answerHolder.empty();
         answerHolder.html("You got it correct! Good Job!");
+        //possibly add a setTimeout here for 3 seconds, and then call askQuestion, and reset timer to 10 seconds again
         console.log("correct");
     }
     else{
