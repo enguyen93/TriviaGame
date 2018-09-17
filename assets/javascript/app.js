@@ -71,14 +71,18 @@ function askQuestion() {
 }
 //work on getting the choice to correspond to the actual click
 $(document).on("click", "button", function (){
-    var choice = $(answers).data("id");
+    var choice = $(this).data("id");
     //how to pass in the correctAns value as the index for the answers index?
-    var index = answers.array[currentA].correctAns;
-    var correct = answers.array[currentA].answers[index];
+    // var index = answers.array[currentA].correctAns;
+    var correct = answers.array[currentA].correctAns;
     if(choice === correct) {
+        answerHolder.empty();
+        answerHolder.html("You got it correct! Good Job!");
         console.log("correct");
     }
     else{
+        answerHolder.empty();
+        answerHolder.html("You got it wrong! Maybe Next Time!");
         console.log("incorrect");
     }
     //if the chosen click is equal to the correct 
