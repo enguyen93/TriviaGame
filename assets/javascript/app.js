@@ -49,7 +49,9 @@ jQuery(function ($) {
     var oneMinute = 10 * 1;
     timeRemaining = $("#timeRemaining");
     startTimer(oneMinute, timeRemaining);
+    askQuestion();
 });
+
 //updates the html with the first question, and answer. every 60 seconds, the counter goes up by 1 and moves 
 //along the array's index
 function askQuestion() {
@@ -61,5 +63,4 @@ function askQuestion() {
         answerHolder.append(answersHtml);
     }
 }
-askQuestion();
 
