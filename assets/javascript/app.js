@@ -44,16 +44,21 @@ function startTimer(duration, timeRemaining) {
     }, 1000);
 }
 
+
 jQuery(function ($) {
     var oneMinute = 10 * 1;
     timeRemaining = $("#timeRemaining");
     startTimer(oneMinute, timeRemaining);
 });
-
+//updates the html with the first question, and answer. every 60 seconds, the counter goes up by 1 and moves 
+//along the array's index
 function askQuestion() {
     questionHolder.html(questions[currentQ].question);
-    for (i = 0; i < answers.array.length; i++) {
-        answerHolder.html(answers.array[currentA].answers.join("   "));
+    //this for loop is to output every value inside the array, need to figure out how to push to separate lines though
+    for (i = 0; i < 4; i++) {
+        var answersHtml = $("<button>");
+        answersHtml.text(answers.array[currentA].answers[i]);
+        answerHolder.append(answersHtml);
     }
 }
 askQuestion();
