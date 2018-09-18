@@ -10,6 +10,16 @@ var questions = [{
     question: "what cod"
 }, {
     question: "what pokemon"
+}, {
+    question: "what console"
+}, {
+    question: "what color"
+}, {
+    question: "what soda"
+}, {
+    question: "what show"
+}, {
+    question: "what lift"
 }];
 
 
@@ -24,6 +34,21 @@ var answers = {
     }, {
         answers: ["yellow", "sapphire", "ruby", "blue"],
         correctAns: 1
+    }, {
+        answers: ["xbox", "playstation", "switch", "offbrand"],
+        correctAns: 2
+    }, {
+        answers: ["yellow", "blue", "red", "green"],
+        correctAns: 1
+    }, {
+        answers: ["root beer", "sprite", "coke", "pepsi"],
+        correctAns: 0
+    }, {
+        answers: ["overlord", "boku no hero", "banana fish", "grand blue"],
+        correctAns: 3
+    }, {
+        answers: ["deadlift", "bench", "curls", "squats"],
+        correctAns: 3
     }
     ]
 };
@@ -70,21 +95,31 @@ function askQuestion() {
     }
 }
 //work on getting the choice to correspond to the actual click
-$(document).on("click", "button", function (){
+$(document).on("click", "button", function () {
     var choice = $(this).data("id");
     //how to pass in the correctAns value as the index for the answers index?
     // var index = answers.array[currentA].correctAns;
     var correct = answers.array[currentA].correctAns;
-    if(choice === correct) {
+    if (choice === correct) {
         answerHolder.empty();
         answerHolder.html("You got it correct! Good Job!");
         //possibly add a setTimeout here for 3 seconds, and then call askQuestion, and reset timer to 10 seconds again
+        // alert("correct");
+        currentA++;
+        currentQ++;
+        askQuestion();
         console.log("correct");
     }
-    else{
+    else {
         answerHolder.empty();
         answerHolder.html("You got it wrong! Maybe Next Time!");
+        //possibly add a setTimeout here for 3 seconds, and then call askQuestion, and reset timer to 10 seconds again
+        // alert("not correct");
+        currentA++;
+        currentQ++;
+        askQuestion();
         console.log("incorrect");
     }
     //if the chosen click is equal to the correct 
 })
+
