@@ -53,9 +53,9 @@ var answers = {
     ]
 };
 
-function startTimer(duration, timeRemaining) {
+function startTimer(duration) {
     var timer = duration, seconds;
-    setInterval(function () {
+    something = setInterval(function () {
         seconds = parseInt(timer % 60, 10);
 
         seconds = seconds < 10 ? "0" + seconds : seconds;
@@ -76,7 +76,7 @@ function startTimer(duration, timeRemaining) {
 jQuery(function ($) {
     var oneMinute = 10 * 1;
     timeRemaining = $("#timeRemaining");
-    startTimer(oneMinute, timeRemaining);
+    startTimer(oneMinute);
     askQuestion();
 });
 
@@ -97,29 +97,43 @@ function askQuestion() {
 //work on getting the choice to correspond to the actual click
 $(document).on("click", "button", function () {
     var choice = $(this).data("id");
+    //var for while loop true/false
+    // var anotherTimer = false;
     //how to pass in the correctAns value as the index for the answers index?
     // var index = answers.array[currentA].correctAns;
     var correct = answers.array[currentA].correctAns;
     if (choice === correct) {
         answerHolder.empty();
-        answerHolder.html("You got it correct! Good Job!");
+        answerHolder.html("You got it correct! Good Job! Get ready for the next Question!");
         //possibly add a setTimeout here for 3 seconds, and then call askQuestion, and reset timer to 10 seconds again
-        // alert("correct");
         currentA++;
         currentQ++;
-        askQuestion();
+        // askQuestion();
+        clearMyClock();
+        setTimeout(function () {
+            askQuestion();
+            startTimer(10);
+        }, 3000);
         console.log("correct");
     }
     else {
         answerHolder.empty();
-        answerHolder.html("You got it wrong! Maybe Next Time!");
+        answerHolder.html("You got it wrong! Maybe Next Time! Get ready for the next question!");
         //possibly add a setTimeout here for 3 seconds, and then call askQuestion, and reset timer to 10 seconds again
         // alert("not correct");
         currentA++;
         currentQ++;
-        askQuestion();
+        clearMyClock();
+        setTimeout(function () {
+            askQuestion();
+            startTimer(10);
+        }, 3000);
         console.log("incorrect");
     }
     //if the chosen click is equal to the correct 
 })
+
+function clearMyClock() {
+    clearInterval(something);
+}
 
