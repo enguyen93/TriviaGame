@@ -1,6 +1,5 @@
 var questionHolder = $(".questionHolder");
 var answerHolder = $(".answerHolder");
-
 var currentQ = 0;
 var currentA = 0;
 
@@ -26,7 +25,7 @@ var questions = [{
 
 var answers = {
     array: [{
-        answers: ["1", "2", "3", "4"],
+        answers: ["1", "H2", "3", "4"],
         correctAns: 1
     }, {
         answers: ["waw", "cod 4", "mw2", "mw3"],
@@ -54,6 +53,8 @@ var answers = {
 };
 
 function startTimer(duration) {
+    let correctIndex = answers.array[currentA].correctAns
+    let correctAnswer = answers.array[currentA].answers[correctIndex];
     var timer = duration, seconds;
     something = setInterval(function () {
         seconds = parseInt(timer % 60, 10);
@@ -64,10 +65,19 @@ function startTimer(duration) {
 
         if (--timer <= -1) {
             timer = duration;
-            currentQ++;
-            currentA++;
-            askQuestion();
+            //this line SHOULD make it wait 3 seconds, and THEN call the rest of the statements
+            clearMyClock();
+            answerHolder.empty();
+            answerHolder.text("You ran out of Time! The correct answer was " + correctAnswer);
 
+            setTimeout(function () {
+
+                startTimer(10);
+                currentQ++;
+                currentA++;
+                askQuestion();
+                console.log("ran out of time");
+            }, 3000);
         }
     }, 1000);
 }
@@ -108,7 +118,6 @@ $(document).on("click", "button", function () {
         //possibly add a setTimeout here for 3 seconds, and then call askQuestion, and reset timer to 10 seconds again
         currentA++;
         currentQ++;
-        // askQuestion();
         clearMyClock();
         setTimeout(function () {
             askQuestion();
@@ -119,10 +128,7 @@ $(document).on("click", "button", function () {
     else {
         answerHolder.empty();
         answerHolder.html("You got it wrong! Maybe Next Time! Get ready for the next question!");
-        //possibly add a setTimeout here for 3 seconds, and then call askQuestion, and reset timer to 10 seconds again
-        // alert("not correct");
-        currentA++;
-        currentQ++;
+
         clearMyClock();
         setTimeout(function () {
             askQuestion();
@@ -130,10 +136,17 @@ $(document).on("click", "button", function () {
         }, 3000);
         console.log("incorrect");
     }
-    //if the chosen click is equal to the correct 
 })
 
 function clearMyClock() {
     clearInterval(something);
 }
 
+
+
+//if my timer is less than or equal to -1 
+//I want to do something for 3 seconds
+//I want it to clear the clock
+//I want to empty the answerHolder
+//I want to replace it with some text
+//and then continue with the rest of the func
