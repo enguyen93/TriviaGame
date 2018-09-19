@@ -19,6 +19,8 @@ var questions = [{
     question: "what show"
 }, {
     question: "what lift"
+}, {
+    question: "quiz over"
 }];
 
 
@@ -48,13 +50,15 @@ var answers = {
     }, {
         answers: ["deadlift", "bench", "curls", "squats"],
         correctAns: 3
+    }, {
+        answers: ["questions correct"],
+        correctAns: 3 //should store the number of correct questions and push them into this 
     }
     ]
 };
 
 function startTimer(duration) {
-    let correctIndex = answers.array[currentA].correctAns
-    let correctAnswer = answers.array[currentA].answers[correctIndex];
+
     var timer = duration, seconds;
     something = setInterval(function () {
         seconds = parseInt(timer % 60, 10);
@@ -64,11 +68,14 @@ function startTimer(duration) {
         timeRemaining.text("Time Remaining: " + seconds);
 
         if (--timer <= -1) {
+            let correctIndex = answers.array[currentA].correctAns
+            let correctAnswer = answers.array[currentA].answers[correctIndex];
             timer = duration;
             //this line SHOULD make it wait 3 seconds, and THEN call the rest of the statements
             clearMyClock();
             answerHolder.empty();
             answerHolder.text("You ran out of Time! The correct answer was " + correctAnswer);
+
 
             setTimeout(function () {
 
@@ -115,7 +122,7 @@ $(document).on("click", "button", function () {
     if (choice === correct) {
         answerHolder.empty();
         answerHolder.html("You got it correct! Good Job! Get ready for the next Question!");
-        //possibly add a setTimeout here for 3 seconds, and then call askQuestion, and reset timer to 10 seconds again
+        
         currentA++;
         currentQ++;
         clearMyClock();
@@ -128,7 +135,8 @@ $(document).on("click", "button", function () {
     else {
         answerHolder.empty();
         answerHolder.html("You got it wrong! Maybe Next Time! Get ready for the next question!");
-
+        currentA++;
+        currentQ++;
         clearMyClock();
         setTimeout(function () {
             askQuestion();
@@ -142,11 +150,13 @@ function clearMyClock() {
     clearInterval(something);
 }
 
+//function to call to make a popup box to congratulate
+function congratulationsPopup () {
+    var newBox = $("<container>");
+    newBox.attr("style", "width: 500px; height: 500px");
+    newBox.attr("id", "congratzPopup");
+    $(document).append(newBox);
+}
 
 
-//if my timer is less than or equal to -1 
-//I want to do something for 3 seconds
-//I want it to clear the clock
-//I want to empty the answerHolder
-//I want to replace it with some text
-//and then continue with the rest of the func
+
