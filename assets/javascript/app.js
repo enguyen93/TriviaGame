@@ -2,6 +2,8 @@ var questionHolder = $(".questionHolder");
 var answerHolder = $(".answerHolder");
 var incorrectHolder = $(".incorrectHolder");
 var noAnswerHolder = $(".noAnswerHolder");
+var $newGameButton = $("#newGameButton");
+var newGameButtonContainer = $(".newGameButtonContainer");
 var gameName = $(".gameName");
 var howManyC = 0;
 var howManyW = 0;
@@ -84,25 +86,26 @@ function startTimer(duration) {
 
             setTimeout(function () {
 
-                startTimer(10);
+                startTimer(60);
                 currentQ++;
                 currentA++;
                 askQuestion();
                 unAnswered++;
                 console.log("ran out of time");
-            }, 3000);
+            }, 5000);
         }
     }, 1000);
 }
 
 
 jQuery(function ($) {
-    var oneMinute = 10 * 1;
+    var oneMinute = 60 * 1;
     timeRemaining = $("#timeRemaining");
     timeRemaining.css({"font-size": "150%", "position": "relative", "text-align": "center"});
     gameName.css({"font-size": "500%", "position": "relative", "text-align": "center"});
     startTimer(oneMinute);
     askQuestion();
+    newGameBtn();
 });
 
 //updates the html with the first question, and answer. every 60 seconds, the counter goes up by 1 and moves 
@@ -136,8 +139,8 @@ $(document).on("click", "p", function () {
         clearMyClock();
         setTimeout(function () {
             askQuestion();
-            startTimer(10);
-        }, 3000);
+            startTimer(60);
+        }, 5000);
         howManyC++;
         console.log("correct");
     }
@@ -149,8 +152,8 @@ $(document).on("click", "p", function () {
         clearMyClock();
         setTimeout(function () {
             askQuestion();
-            startTimer(10);
-        }, 3000);
+            startTimer(60);
+        }, 5000);
         howManyW++;
         console.log("incorrect");
     }
@@ -203,17 +206,28 @@ function timeOutWrong () {
 //need to figure out when to call the endgamestats function
 
 
+function newGameBtn () {
+    let button = $("<button>");
+    button.attr("type", "button");
+    button.text("Restart?");
+    button.attr("id", "newGameButton");
+    button.css({"font-size": "220%", "position": "absolute", "text-align": "center", "background": "green", "display": "inline-block"});
+    $('body').append(button);
+}
+
+$(document).on('click', "newGameButton", function (){
+    newgame1();
+
+});
 
 
 
-$newGameButton.addEventListener('click', newGame);
-
-function newGame () {
+function newGame1 () {
     currentA = 0;
     currentQ = 0;
     howManyC = 0;
     howManyW = 0;
     unAnswered = 0;
+    startTimer(60);
     askQuestion();
 }
-//need to figure out when to call newGame function
