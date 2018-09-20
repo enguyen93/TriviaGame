@@ -214,4 +214,6 @@ function newGame () {
     howManyC = 0;
     howManyW = 0;
     unAnswered = 0;
+    askQuestion();
 }
+//need to figure out when to call newGame function
