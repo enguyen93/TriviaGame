@@ -2,23 +2,24 @@ var questionHolder = $(".questionHolder");
 var answerHolder = $(".answerHolder");
 var currentQ = 0;
 var currentA = 0;
+var howManyCorrect = 0;
 
 var questions = [{
-    question: "what halo"
+    question: "This small cookie contains 5 grams of carbohydrates, 10 grams of fat, and 5 grams of protein. How many Calories does this food provide?"
 }, {
-    question: "what cod"
+    question: "Treatment protocols for protein-energy malnutrition begin with: "
 }, {
-    question: "what pokemon"
+    question: "Which of the following are essential amino acids for infants?"
 }, {
-    question: "what console"
+    question: "Which one of the following fatty acids is considered essential from a nutritional point of view?"
 }, {
-    question: "what color"
+    question: "Steatorrhea is associated with all of the following EXCEPT:"
 }, {
-    question: "what soda"
+    question: "Medium chain triglycerides"
 }, {
-    question: "what show"
+    question: "The pancreas produces and secretes all of the following digestive enzymes (or their precursors) EXCEPT:"
 }, {
-    question: "what lift"
+    question: "Bulimia is characterized by"
 }, {
     question: "quiz over"
 }];
@@ -27,32 +28,31 @@ var questions = [{
 
 var answers = {
     array: [{
-        answers: ["1", "H2", "3", "4"],
-        correctAns: 1
-    }, {
-        answers: ["waw", "cod 4", "mw2", "mw3"],
+        answers: ["100 Cal", "180 Cal", "130 Cal", "20 Cal"],
         correctAns: 2
     }, {
-        answers: ["yellow", "sapphire", "ruby", "blue"],
-        correctAns: 1
-    }, {
-        answers: ["xbox", "playstation", "switch", "offbrand"],
-        correctAns: 2
-    }, {
-        answers: ["yellow", "blue", "red", "green"],
-        correctAns: 1
-    }, {
-        answers: ["root beer", "sprite", "coke", "pepsi"],
+        answers: ["Replenishment of fluids followed by gradual increase in high quality protein and/or calories in the diet", "supplimentation of the diet with a high protein/high calorie drink", "weight bearing exercise", "fruit drinks"],
         correctAns: 0
     }, {
-        answers: ["overlord", "boku no hero", "banana fish", "grand blue"],
+        answers: ["Histidine and arginine", "leucine, isoleucine and valine", "tryptophan and methionine", "All of them"],
         correctAns: 3
     }, {
-        answers: ["deadlift", "bench", "curls", "squats"],
+        answers: ["Arachidonic acid (20:4)", "docosahexaenoic acid (22:6)", "linoleic acid (18:2)", "	palmitoleic acid (16:1)"],
+        correctAns: 2
+    }, {
+        answers: ["pancreatic exocrine insufficiency", "pancreatic beta-call insufficiency", "loss of the proximal small intestine", "intestinal villous malfunction"],
+        correctAns: 1
+    }, {
+        answers: ["can be absorbed intact without hydrolysis", "can be absorbed via the portal vein", "The first 2 choices", "contain mainly myristic acid (C:14)"],
+        correctAns: 0
+    }, {
+        answers: ["alpha-amylase", "chymotrypsin", "cholesteryl ester hydrolase", "lactase"],
         correctAns: 3
     }, {
-        answers: ["questions correct"],
-        correctAns: 3 //should store the number of correct questions and push them into this 
+        answers: ["avoidance of carbohydrate-containing foods", "vitamin deficiencies", "hyperthyroidism", "dental caries"],
+        correctAns: 3
+    }, {
+
     }
     ]
 };
@@ -114,15 +114,13 @@ function askQuestion() {
 //work on getting the choice to correspond to the actual click
 $(document).on("click", "button", function () {
     var choice = $(this).data("id");
-    //var for while loop true/false
-    // var anotherTimer = false;
-    //how to pass in the correctAns value as the index for the answers index?
-    // var index = answers.array[currentA].correctAns;
+    let correctIndex = answers.array[currentA].correctAns
+    let correctAnswer = answers.array[currentA].answers[correctIndex];
     var correct = answers.array[currentA].correctAns;
     if (choice === correct) {
         answerHolder.empty();
         answerHolder.html("You got it correct! Good Job! Get ready for the next Question!");
-        
+        // congratulationsPopup();
         currentA++;
         currentQ++;
         clearMyClock();
@@ -134,7 +132,7 @@ $(document).on("click", "button", function () {
     }
     else {
         answerHolder.empty();
-        answerHolder.html("You got it wrong! Maybe Next Time! Get ready for the next question!");
+        answerHolder.html("You got it wrong! Maybe Next Time! Get ready for the next question! The correct answer was " + correctAnswer);
         currentA++;
         currentQ++;
         clearMyClock();
@@ -150,13 +148,15 @@ function clearMyClock() {
     clearInterval(something);
 }
 
-//function to call to make a popup box to congratulate
-function congratulationsPopup () {
-    var newBox = $("<container>");
-    newBox.attr("style", "width: 500px; height: 500px");
-    newBox.attr("id", "congratzPopup");
-    $(document).append(newBox);
-}
 
+//function to call to make a popup box to congratulate
+// function congratulationsPopup () {
+//     var div = $('<div class="congratzPopupClass">');
+//     div.attr("style", "width: 500px; height: 500px");
+//     div.attr("id", "congratzPopup");
+//     div.text("Hey you got it right");
+//     answerHolder.append(div);
+// }
+//so far this only adds the text underneath the other congratz message
 
 
