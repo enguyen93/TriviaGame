@@ -1,8 +1,13 @@
 var questionHolder = $(".questionHolder");
 var answerHolder = $(".answerHolder");
+var incorrectHolder = $(".incorrectHolder");
+var noAnswerHolder = $(".noAnswerHolder");
+var gameName = $(".gameName");
+var howManyC = 0;
+var howManyW = 0;
+var unAnswered = 0;
 var currentQ = 0;
 var currentA = 0;
-var howManyCorrect = 0;
 
 var questions = [{
     question: "This small cookie contains 5 grams of carbohydrates, 10 grams of fat, and 5 grams of protein. How many Calories does this food provide?"
@@ -21,7 +26,7 @@ var questions = [{
 }, {
     question: "Bulimia is characterized by"
 }, {
-    question: "quiz over"
+    question: "All Done, Heres how you did!"
 }];
 
 
@@ -31,7 +36,7 @@ var answers = {
         answers: ["100 Cal", "180 Cal", "130 Cal", "20 Cal"],
         correctAns: 2
     }, {
-        answers: ["Replenishment of fluids followed by gradual increase in high quality protein and/or calories in the diet", "supplimentation of the diet with a high protein/high calorie drink", "weight bearing exercise", "fruit drinks"],
+        answers: ["Replenishment of fluids followed by gradual increase in high quality protein and/or calories in the diet", "supplementation of the diet with a high protein/high calorie drink", "weight bearing exercise", "fruit drinks"],
         correctAns: 0
     }, {
         answers: ["Histidine and arginine", "leucine, isoleucine and valine", "tryptophan and methionine", "All of them"],
@@ -68,13 +73,13 @@ function startTimer(duration) {
         timeRemaining.text("Time Remaining: " + seconds);
 
         if (--timer <= -1) {
-            let correctIndex = answers.array[currentA].correctAns
-            let correctAnswer = answers.array[currentA].answers[correctIndex];
+            // let correctIndex = answers.array[currentA].correctAns
+            // let correctAnswer = answers.array[currentA].answers[correctIndex];
             timer = duration;
             //this line SHOULD make it wait 3 seconds, and THEN call the rest of the statements
             clearMyClock();
             answerHolder.empty();
-            answerHolder.text("You ran out of Time! The correct answer was " + correctAnswer);
+            timeOutWrong();
 
 
             setTimeout(function () {
@@ -83,6 +88,7 @@ function startTimer(duration) {
                 currentQ++;
                 currentA++;
                 askQuestion();
+                unAnswered++;
                 console.log("ran out of time");
             }, 3000);
         }
@@ -93,6 +99,8 @@ function startTimer(duration) {
 jQuery(function ($) {
     var oneMinute = 10 * 1;
     timeRemaining = $("#timeRemaining");
+    timeRemaining.css({"font-size": "150%", "position": "relative", "text-align": "center"});
+    gameName.css({"font-size": "500%", "position": "relative", "text-align": "center"});
     startTimer(oneMinute);
     askQuestion();
 });
@@ -102,25 +110,27 @@ jQuery(function ($) {
 function askQuestion() {
     // debugger;
     questionHolder.html(questions[currentQ].question);
+    questionHolder.css({"font-size": "250%", "position": "relative", "text-align": "center"});
     answerHolder.empty();
     //this for loop is to output every value inside the array, need to figure out how to push to separate lines though
     for (i = 0; i < 4; i++) {
-        var button = $("<button>");
-        button.text(answers.array[currentA].answers[i]);
-        button.attr('data-id', i);
-        answerHolder.append(button);
+        var choice = $("<p>");
+        choice.text(answers.array[currentA].answers[i]);
+        choice.attr('data-id', i);
+        choice.css({ "cursor": "pointer", "font-size": "200%", "position": "relative", "text-align": "center" });
+        //work on above line to make sure all answers don't go off screen
+        answerHolder.append(choice);
     }
 }
 //work on getting the choice to correspond to the actual click
-$(document).on("click", "button", function () {
+$(document).on("click", "p", function () {
     var choice = $(this).data("id");
-    let correctIndex = answers.array[currentA].correctAns
-    let correctAnswer = answers.array[currentA].answers[correctIndex];
+    // let correctIndex = answers.array[currentA].correctAns
+    // let correctAnswer = answers.array[currentA].answers[correctIndex];
     var correct = answers.array[currentA].correctAns;
     if (choice === correct) {
         answerHolder.empty();
-        answerHolder.html("You got it correct! Good Job! Get ready for the next Question!");
-        // congratulationsPopup();
+        congratulationsPopup();
         currentA++;
         currentQ++;
         clearMyClock();
@@ -128,11 +138,12 @@ $(document).on("click", "button", function () {
             askQuestion();
             startTimer(10);
         }, 3000);
+        howManyC++;
         console.log("correct");
     }
     else {
         answerHolder.empty();
-        answerHolder.html("You got it wrong! Maybe Next Time! Get ready for the next question! The correct answer was " + correctAnswer);
+        incorrectBox();
         currentA++;
         currentQ++;
         clearMyClock();
@@ -140,6 +151,7 @@ $(document).on("click", "button", function () {
             askQuestion();
             startTimer(10);
         }, 3000);
+        howManyW++;
         console.log("incorrect");
     }
 })
@@ -150,13 +162,56 @@ function clearMyClock() {
 
 
 //function to call to make a popup box to congratulate
-// function congratulationsPopup () {
-//     var div = $('<div class="congratzPopupClass">');
-//     div.attr("style", "width: 500px; height: 500px");
-//     div.attr("id", "congratzPopup");
-//     div.text("Hey you got it right");
-//     answerHolder.append(div);
+function congratulationsPopup() {
+    let correctBox = $("<p>");
+    correctBox.text("You got it correct! Good Job! Get ready for the next Question!");
+    correctBox.css({ "font-size": "150%", "position": "relative", "text-align": "center" });
+    answerHolder.append(correctBox);
+}
+
+function incorrectBox() {
+    // var choice = $(this).data("id");
+    let correctIndex = answers.array[currentA].correctAns
+    let correctAnswer = answers.array[currentA].answers[correctIndex];
+    // var correct = answers.array[currentA].correctAns;
+    let incorrectBox = $("<p>");
+    incorrectBox.text("You got it wrong! Maybe Next Time! Get ready for the next question! The correct answer was " + correctAnswer);
+    incorrectBox.css({ "font-size": "150%", "position": "relative", "text-align": "center" });
+    answerHolder.append(incorrectBox);
+}
+
+function timeOutWrong () {
+    // var choice = $(this).data("id");
+    let correctIndex = answers.array[currentA].correctAns
+    let correctAnswer = answers.array[currentA].answers[correctIndex];
+    // var correct = answers.array[currentA].correctAns;
+    let incorrectBox = $("<p>");
+    incorrectBox.text("You ran out of time! Maybe Next Time! Get ready for the next question! The correct answer was " + correctAnswer);
+    incorrectBox.css({ "font-size": "150%", "position": "relative", "text-align": "center" });
+    answerHolder.append(incorrectBox);
+}
+
+// function endGameStats (){
+//     answerHolder.text("How Many Correct " + howManyC);
+//     answerHolder.css({ "font-size": "150%", "position": "relative", "text-align": "center" });
+//     incorrectHolder.text("How Many Incorrect " + howManyW);
+//     incorrectHolder.css({ "font-size": "150%", "position": "relative", "text-align": "center" });
+//     noAnswerHolder.text("How many were unanswered " + unAnswered);
+//     noAnswerHolder.css({ "font-size": "150%", "position": "relative", "text-align": "center" });
 // }
-//so far this only adds the text underneath the other congratz message
+
+//need to figure out when to call the endgamestats function
 
 
+
+
+
+$newGameButton.addEventListener('click', newGame);
+
+function newGame () {
+    currentA = 0;
+    currentQ = 0;
+    howManyC = 0;
+    howManyW = 0;
+    unAnswered = 0;
+}
