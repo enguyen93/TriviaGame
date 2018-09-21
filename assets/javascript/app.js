@@ -210,9 +210,8 @@ function newGameBtn () {
     let button = $("<button>");
     button.attr("type", "button");
     button.text("Restart?");
-    button.attr("id", "newGameButton");
-    button.css({"font-size": "220%", "position": "absolute", "text-align": "center", "background": "green", "display": "inline-block"});
-    $('body').append(button);
+    button.css({"font-size": "220%", "text-align": "center", "background": "green"});
+    newGameButtonContainer.append(button);
 }
 
 $(document).on('click', "newGameButton", function (){

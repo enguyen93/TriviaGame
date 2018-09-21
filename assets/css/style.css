@@ -5,3 +5,9 @@ body {
     font-weight: bold;
     
 }
+
+.newGameButtonContainer {
+    display: flex; 
+    justify-content: center;
+    
+}
